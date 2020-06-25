@@ -3,17 +3,20 @@ package com.g_vente.bean;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import com.g_vente.entity.Client;
 import com.g_vente.entity.Commande;
 import com.g_vente.entity.ProduitP;
+import com.g_vente.entity.ProduitS;
+import com.g_vente.service.ClientService;
 import com.g_vente.service.CommandeService;
 import com.g_vente.service.ProduitPService;
+import com.g_vente.service.ProduitSService;
 
 @ManagedBean(name="cmdBean")
 @SessionScoped
@@ -24,16 +27,47 @@ public class CommandeBean {
 	
 	@ManagedProperty(value="#{produitPService}")
 	ProduitPService produitPService;
+	
+	@ManagedProperty(value="#{stockService}")
+	ProduitSService produitSService;
+	
+	@ManagedProperty(value="#{clientService}")
+	ClientService clientService;
+	
+	public ClientService getClientService() {
+		return clientService;
+	}
+
+	public void setClientService(ClientService clientService) {
+		this.clientService = clientService;
+	}
+
+	public ProduitSService getProduitSService() {
+		return produitSService;
+	}
+
+	public void setProduitSService(ProduitSService produitSService) {
+		this.produitSService = produitSService;
+	}
 
 	private Commande commande = new Commande();
+	private Client clt = new Client();
 	
-	private String data;
+	public Client getClt() {
+		return clt;
+	}
 
-	public String getData() {
+	public void setClt(Client clt) {
+		this.clt = clt;
+	}
+
+	private int data;
+
+	public int getData() {
 		return data;
 	}
 
-	public void setData(String data) {
+	public void setData(int data) {
 		this.data = data;
 	}
 
@@ -61,22 +95,37 @@ public class CommandeBean {
 		this.commande = commande;
 	}
 	
-	public void add(int id) {
-			FacesContext ctx = FacesContext.getCurrentInstance();
-			 Map<String,String> params=ctx.getExternalContext().getRequestParameterMap();
-			data = params.get("id_pdt");
-			 
-			System.out.println(id);
-			ProduitP produitP =produitPService.findById(id);
-			System.out.println("products searched is :"+produitP.toString());
+	public String addCommande() {
+			ProduitP produitP =produitPService.findById(data);
+			ProduitS produitS = new ProduitS();
+			produitS = produitSService.findByName(produitP.getNomPdt());
+			
+			Client c = clientService.findByName(clt.getNomClt());
+			
 			LocalDate dateNow = LocalDate.now();
 			ZoneId defaultZoneId = ZoneId.systemDefault();
 			Date d = Date.from(dateNow.atStartOfDay(defaultZoneId).toInstant());
-		
-			commande.setProduitP(produitP);
-			commande.setDateCmd(d);
-			commande.setQteCmd(15);
-		cmdService.addCommand(commande);
+			
+			if(commande.getQteCmd()<=produitS.getQtePdt()) {
+				commande.setProduitP(produitP);
+				commande.setDateCmd(d);
+				commande.setClient(c);
+				
+				cmdService.addCommand(commande);
+				
+				int newQte = produitS.getQtePdt()-commande.getQteCmd();
+					produitS.setQtePdt(newQte);
+					produitSService.update(produitS);
+					return "view/index";
+			}
+			return null;
 	}
 	
+	public String goTo() {
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		data = Integer.parseInt(ctx.getExternalContext().getRequestParameterMap().get("id")) ;
+		
+		return "/accueil";
+		
+	}
 }

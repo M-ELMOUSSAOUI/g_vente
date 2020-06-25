@@ -8,8 +8,10 @@ public interface ProduitSDao {
 	
 	public void save(ProduitS ps);
 	
-	public ProduitS findById(int id);
+	public ProduitS findByName(String name);
 	
 	public List<ProduitS> findAll();
+	
+	public void update(ProduitS ps);
 
 }

@@ -6,9 +6,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.persistence.Column;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.g_vente.entity.ProduitS;
@@ -97,11 +95,5 @@ public class ProduitStockBean implements Serializable {
 	public List<ProduitS> getAll() {
 		return stockService.findAll();
 	}
-	public void saveIntoStock() {
-		
-		System.out.println(produitS.getNomPdt());
-		stockService.save(produitS);
-		
-	}
-
+	
 }

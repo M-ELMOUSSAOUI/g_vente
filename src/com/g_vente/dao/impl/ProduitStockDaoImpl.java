@@ -6,8 +6,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.g_vente.dao.ProduitSDao;
 import com.g_vente.entity.ProduitS;
@@ -19,13 +17,7 @@ public class ProduitStockDaoImpl  implements ProduitSDao {
 	@Qualifier( value="sessionFactory2")
 	SessionFactory sessionFactory;
 	
-	@Override
-	public ProduitS findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ProduitS> findAll() {
@@ -38,6 +30,22 @@ public class ProduitStockDaoImpl  implements ProduitSDao {
 	public void save(ProduitS ps) {
 		// TODO Auto-generated method stub
 		this.sessionFactory.getCurrentSession().save(ps);
+	}
+
+
+	@Override
+	public ProduitS findByName(String name) {
+		// TODO Auto-generated method stub
+		return (ProduitS) this.sessionFactory.getCurrentSession().createQuery("from ProduitS ps where ps.nomPdt= :name")
+				.setParameter("name", name)
+				.getSingleResult();
+	}
+
+
+	@Override
+	public void update(ProduitS ps) {
+		// TODO Auto-generated method stub
+		this.sessionFactory.getCurrentSession().update(ps);
 	}
 
 }

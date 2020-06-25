@@ -48,4 +48,11 @@ public class ProduitPServiceImpl implements ProduitPService{
 		return produitPDao.findBytId(id);
 	}
 
+
+	@Override
+	public void update(ProduitP p) {
+		// TODO Auto-generated method stub
+		this.produitPDao.update(p);
+	}
+
 }

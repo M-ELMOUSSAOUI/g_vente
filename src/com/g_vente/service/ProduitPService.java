@@ -9,5 +9,6 @@ public interface ProduitPService {
 	public void save(ProduitP p);
 	public List<ProduitP> findAll(); 
 	public void delete(ProduitP p);
+	public void update(ProduitP p);
 	
 }

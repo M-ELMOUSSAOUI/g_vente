@@ -26,15 +26,17 @@ public class ProduitStockServiceImpl implements ProduitSService {
 	}
 
 	@Override
-	public ProduitS findById(int id) {
+	public ProduitS findByName(String name) {
 		// TODO Auto-generated method stub
-		return null;
+		return this.stockDao.findByName(name);
 	}
 
 	@Override
-	public void save(ProduitS ps) {
+	public void update(ProduitS p) {
 		// TODO Auto-generated method stub
-		stockDao.save(ps);
+		this.stockDao.update(p);
 	}
+
+
 
 }

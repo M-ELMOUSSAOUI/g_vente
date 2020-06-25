@@ -49,6 +49,7 @@
 				<value>com.g_vente.entity.ProduitP</value>
 				<value>com.g_vente.entity.User</value>
 				<value>com.g_vente.entity.Commande</value>
+				<value>com.g_vente.entity.Client</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
