@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head></h:head>
+<body>
+
+	<h:form>
+		<h:dataTable value="#{produitBean.products}" var="p">
+			<h:column>
+				<f:facet name="header"> ID </f:facet>
+				#{p.codePdt}
+			</h:column>
+			<h:column>
+				<f:facet name="header"> Nom </f:facet>
+				#{p.nomPdt}
+			</h:column>
+			<h:column>
+				<f:facet name="header"> Quantité </f:facet>
+				#{p.qtePdt}
+			</h:column>
+			<h:column>
+				<f:facet name="header"> Prix </f:facet>
+				#{p.prixPdt}
+			</h:column>
+			<h:column>
+				<f:facet name="header"> Action </f:facet>
+				<h:commandLink action="#{cmdBean.goTo()}" value="sell this">
+					<f:param name="id" value="#{p.codePdt}" />
+				</h:commandLink>
+			</h:column>
+		</h:dataTable>
+
+	</h:form>
+</body>
+</html>
